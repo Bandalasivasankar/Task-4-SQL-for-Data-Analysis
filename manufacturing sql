@@ -1,0 +1,71 @@
+use april7;
+show tables;
+desc manufacturing;
+SELECT * FROM manufacturing limit 10;
+
+
+
+SELECT 
+    Buyer,
+    SUM("TotalQty") AS Total_Quantity,
+    SUM("TotalValue") AS Total_Value
+FROM manufacturing
+WHERE "TotalValue" > 60000
+GROUP BY Buyer
+ORDER BY Total_Value DESC;
+
+
+SELECT m.`EMP Code`,
+       e.`Emp Name`,
+       m.Buyer,
+       m.`Department Name`,
+       m.TotalQty,
+       m.TotalValue
+FROM manufacturing m
+INNER JOIN (
+    SELECT DISTINCT `EMP Code`, `Emp Name`
+    FROM manufacturing
+) e ON m.`EMP Code` = e.`EMP Code`;
+    
+    
+
+SELECT 
+    "Department Name",
+    SUM("TotalQty") AS Total_Quantity
+FROM manufacturing
+GROUP BY "Department Name"
+HAVING SUM("TotalQty") > (
+    SELECT AVG("TotalQty")
+    FROM manufacturing
+);
+
+
+SELECT 
+    "Emp Name",
+    SUM("TotalQty") AS Total_Produced,
+    AVG("TotalQty") AS Avg_Produced
+FROM manufacturing
+GROUP BY "Emp Name"
+ORDER BY Total_Produced DESC;
+
+
+SELECT 
+    "Department Name",
+    SUM("TotalQty") AS Total_Quantity,
+    SUM("TotalValue") AS Total_Value,
+    AVG("TotalValue") AS Avg_Value
+FROM manufacturing
+GROUP BY "Department Name";
+
+
+
+
+
+
+
+SELECT Buyer, `Department Name`, SUM(TotalValue) AS Total_Value
+FROM manufacturing
+GROUP BY Buyer, `Department Name`
+ORDER BY Total_Value DESC;
+
+
